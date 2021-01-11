@@ -108,18 +108,20 @@ console.log(JZS_detectWebkit());
 例子：
 
 ```js
+// 调用实例
 $JZS_Ajax({
-  type: "get", // 请求类型
-  data: {
-    group: "AppApis", // 请求参数
+  type: "POST",
+  url: "https:",
+  dataType: "json",
+  data: { val1: "abc", val2: 123, val3: "456" },
+  beforeSend: function () {
+    //some js code
   },
-  url: "http://tapi.juzishu.com.cn/onlineeducation/v2/api-docs", // 接口地址
-  success: function (res) {
-    //成功后的回调
-    console.log(res);
+  success: function (msg) {
+    console.log(msg);
   },
-  error: function (error) {
-    //失败后的回调
+  error: function () {
+    console.log("error");
   },
 });
 ```

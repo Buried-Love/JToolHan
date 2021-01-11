@@ -285,50 +285,85 @@ function JZS_cssPenetrate(ele) {
   }
 }
 
-// 二次封装Ajax
-function $JZS_Ajax(data) {
-  data.type = data.type || "get";
-  data.async = data.async || true;
-  data.data = data.data || null;
-  var params = _params(data.data);
-  //在路径后面添加时间戳加随机数防止浏览器缓存。
-  data.url += (data.url.indexOf("?") > -1 ? "&" : "?") + "t=" + ((new Date()).getTime() + Math.random());
-  if (data.type.toLowerCase() == "get" && params.length > 0) {
-    data.url += "&" + params;
+// 原生ajax 请求 封装工具类
+function $JZS_Ajax() {
+  var ajaxData = {
+    type: arguments[0].type || "GET",
+    url: arguments[0].url || "",
+    async: arguments[0].async == undefined ? "true" : `${arguments[0].async}`,
+    data: arguments[0].data || null,
+    dataType: arguments[0].dataType || "text",
+    contentType: arguments[0].contentType || "application/x-www-form-urlencoded",
+    beforeSend: arguments[0].beforeSend || function () {},
+    success: arguments[0].success || function () {},
+    error: arguments[0].error || function () {}
   }
-  var xhr = new XMLHttpRequest();
-  xhr.open(data.type, data.url, data.async);
-  if (data.type.toLowerCase() == "post") {
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send(params)
-  } else
+  ajaxData.url = window.globalConfig.baseURL + ajaxData.url; // 拼接当前请求头
+  ajaxData.beforeSend();
+  var xhr = _createxmlHttpRequest();
+  xhr.responseType = ajaxData.dataType;
+  xhr.open(ajaxData.type, ajaxData.url, ajaxData.async);
+  xhr.setRequestHeader("Content-Type", ajaxData.contentType);
+  // 判断get请求
+  if (ajaxData.type.toLowerCase() == "get") {
+    ajaxData.url += "?" + _params(ajaxData.data);
+    xhr.open(ajaxData.type, ajaxData.url, ajaxData.async);
     xhr.send(null);
-  if (data.async) {
-    xhr.onreadystatechange = function () {
-      //响应状态为4，数据加载完毕。
-      if (xhr.readyState == 4)
-        callback();
-    }
-  } else
-    //同步
-    callback();
-
-  function callback() {
-    if (xhr.status == 200) {
-      // data.success(xhr.responseText);
-      data.success(JSON.parse(xhr.responseText));
-    } else {
-      data.error(JSON.parse(xhr.status));
+  }
+  // 判断post请求
+  if (ajaxData.type.toLowerCase() == "post") {
+    xhr.send(_convertData(ajaxData.data));
+  }
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4) {
+      if (xhr.status == 200) {
+        ajaxData.success(xhr.response)
+      } else {
+        ajaxData.error()
+      }
     }
   }
-  //将对象序列化，将对象拼接成url字符串
-  function _params(data) {
-    if (data == null)
-      return data;
+}
+//将对象序列化，将对象拼接成url字符串
+function _params(data, type) {
+  if (data == null)
+    return data;
+  if (data.data == undefined) {
     var arr = [];
     for (var i in data) {
       arr.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]));
     }
     return arr.join("&");
+  } else {
+    if (type.toLowerCase() == "post") {
+      return JSON.stringify(data);
+    } else {
+      var arr = [];
+      for (var i in data) {
+        arr.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]));
+      }
+      return arr.join("&");
+    }
+  }
+}
+
+function _createxmlHttpRequest() {
+  if (window.ActiveXObject) {
+    return new ActiveXObject("Microsoft.XMLHTTP");
+  } else if (window.XMLHttpRequest) {
+    return new XMLHttpRequest();
+  }
+}
+
+function _convertData(data) {
+  if (typeof data === 'object') {
+    var convertResult = "";
+    for (var c in data) {
+      convertResult += c + "=" + data[c] + "&";
+    }
+    convertResult = convertResult.substring(0, convertResult.length - 1)
+    return convertResult;
+  } else {
+    return data;
   }
 }
