@@ -1,5 +1,5 @@
 // 获取页面元素
-function $JZS(event) {
+function _Han(event) {
   let element;
   if (document.querySelectorAll(event).length > 1) {
     element = document.querySelectorAll(event);
@@ -15,7 +15,7 @@ function $JZS(event) {
 // ele点击的那个
 // dbele拖动的那个
 // 整屏幕拖动加入position: fixed;
-function JZS_drag(ele, dbele) {
+function _Handrag(ele, dbele) {
   ele.onmousedown = function (evt) {
     //获取事件对象，兼容写法
     var oEvent = evt || event;
@@ -57,7 +57,7 @@ function JZS_drag(ele, dbele) {
     oY 鼠标样式的右侧距离 默认值是15
     拖动加入position: fixed;
 */
-function JZS_mouseFollow(oTop, oX, oY) {
+function _HanMouseFollow(oTop, oX, oY) {
   // 默认值是 15
   if (oX === undefined) {
     oX = 15;
@@ -78,7 +78,7 @@ function JZS_mouseFollow(oTop, oX, oY) {
 /*
 获取当前浏览器名称
 */
-function JZS_getBrowserInfo() {
+function _HanGetBrowserInfo() {
   var ua = navigator.userAgent.toLocaleLowerCase();
   var browserType = null;
   if (ua.match(/msie/) != null || ua.match(/trident/) != null) {
@@ -135,7 +135,7 @@ function JZS_getBrowserInfo() {
   return browserType + "浏览器";
 }
 //  检测 浏览器是否加载flash
-function JZS_hasUsableFlash() {
+function _HanHasUsableFlash() {
   var flashObj;
   if (typeof window.ActiveXObject != "undefined") {
     flashObj = new ActiveXObject("ShockwaveFlash.ShockwaveFlash");
@@ -145,7 +145,7 @@ function JZS_hasUsableFlash() {
   return flashObj ? true : false;
 }
 // 检测浏览器是否是webkit内核
-function JZS_detectWebkit() {
+function _HanDetectWebkit() {
   return (function (w) {
     "use strict";
     var n = w.navigator,
@@ -163,15 +163,15 @@ function JZS_detectWebkit() {
   })("undefined" != typeof window ? window : this);
 }
 // 提取字符串中的数字
-function JZS_getStringInNumber(string) {
+function _HanGetStringInNumber(string) {
   return string.replace(/[^0-9]/gi, "");
 }
 // 提取中文字符
-function JZS_getInString(string) {
+function _HanGetInString(string) {
   return /^\D+(?=\d)/.exec(string);
 }
 // 手机号正则
-function JZS_judgePhoneNum(phone) {
+function _HanJudgePhoneNum(phone) {
   let r = /^1[3456789]\d{9}$/;
   return r.test(phone);
 }
@@ -179,7 +179,7 @@ function JZS_judgePhoneNum(phone) {
 //  开始时间 startDate  结束时间 endDate
 //  yy-MM-dd 格式
 //  获取使用时间
-function JZS_TimeCalculation(startDate, endDate) {
+function _HanTimeCalculation(startDate, endDate) {
   if (endDate == null) {
     endDate = "1988-01-01";
   }
@@ -222,7 +222,7 @@ function JZS_TimeCalculation(startDate, endDate) {
 }
 // 获取当前时间到X天之前的时间(这里是近30天)
 // 返回当前时间 与 传入相差时间
-function JZS_getRaday(currentDate) {
+function _HanGetRaday(currentDate) {
   var date = new Date();
   var year = date.getFullYear();
   var month = date.getMonth() + 1;
@@ -255,7 +255,7 @@ function JZS_getRaday(currentDate) {
 }
 
 // 获取声音分贝
-function JZS_decibel() {
+function _HanDecibel() {
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     let AudioContext = window.AudioContext || window.webkitAudioContext;
     var audioContext = new AudioContext();
@@ -292,16 +292,16 @@ function JZS_decibel() {
   }
 }
 // 元素穿透各种JS事件不遮挡
-function JZS_cssPenetrate(ele) {
+function _HanCssPenetrate(ele) {
   if (ele) {
     ele.style.pointerEvents = "none";
   } else {
-    return console.log("JZS_cssPenetrate:=====> 参数不能为空!!");
+    return console.error("参数不能为空!!");
   }
 }
 
 // 原生ajax 请求 封装工具类
-function $JZS_Ajax() {
+function _HanAjax() {
   var ajaxData = {
     type: arguments[0].type || "GET",
     url: arguments[0].url || "",
@@ -385,7 +385,7 @@ function _convertData(data) {
 /*
 轻提示
 */
-function _softlyTips(dataObj) {
+function _HanSoftlyTips(dataObj) {
   if (typeof dataObj != "object") {
     console.error(
       "Error: The argument cannot be null or must be of type Object. 行不行啊铁子!"
@@ -416,7 +416,9 @@ function _softlyTips(dataObj) {
     if (document.querySelector(".softly_tips")) {
       document.querySelector(".softly_tips").style.opacity = 0;
       setTimeout(() => {
-        document.querySelector(".softly_tips").remove();
+        if (document.querySelector(".softly_tips")) {
+          document.querySelector(".softly_tips").remove();
+        }
       }, 500);
     }
   }, (dataObj.time ? dataObj.time : 2000) + 500);
@@ -426,7 +428,7 @@ function _softlyTips(dataObj) {
   dialog弹窗
 
 */
-let _dialog = (function () {
+let _HanDialog = (function () {
   // 节点类型
   let elem, dialogBodyBox, cancelBtn, confirmBtn;
   // 动画函数数组
