@@ -241,3 +241,30 @@ JZS_judgePhoneNum(12345612542);
 JZS_getInString("按 hhhhh 时枯鲁杜鹃 14544 哎算了看的见 897435");
 // 输出结果为一个对象
 ```
+
+调用轻提示
+
+```js
+_softlyTips({
+  content: "请输入内容",
+  time: 1000,
+});
+```
+
+调用 dialog 弹窗
+
+```js
+_dialog.show({
+  title: "测试",
+  content: "男人不能说不行,铁子!",
+  btns: ["我能行", "我不行"],
+  shadeClose: false,
+  animation: 2,
+  confirm: () => {
+    console.log("确认回调");
+  },
+  cancel: () => {
+    console.log("取消回调");
+  },
+});
+```
