@@ -271,3 +271,13 @@ _HanDialog.show({
   },
 });
 ```
+
+【批量获取 URL 内携带的参数】
+【\_HanGetQueryDataList】方法：
+
+调用
+
+```js
+let getDataList = ["type", "id", "number", "text"];
+this._HanGetQueryDataList(getDataList);
+```

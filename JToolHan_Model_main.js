@@ -389,12 +389,12 @@ function _convertData(data) {
 function _HanSoftlyTips(dataObj) {
   if (typeof dataObj != "object") {
     console.error(
-      "Error: The argument cannot be null or must be of type Object. 行不行啊铁子!"
+      "Error: The argument cannot be null or must be of type Object."
     );
     return;
   }
   if (!dataObj.content) {
-    console.error("Error: content of Null. 行不行啊铁子!");
+    console.error("Error: content of Null.");
     return;
   }
   let softlyTipsDom = document.querySelector(".softlyTipsDom");
@@ -533,3 +533,39 @@ let _HanDialog = (function () {
     hide,
   };
 })();
+// 判断ios或 安卓
+function _HanIfIOSAN() {
+  var ua = navigator.userAgent.toLocaleLowerCase();
+  var u = navigator.userAgent;
+  var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+  return isIOS;
+}
+
+/**
+ * 批量 获取 URL 内携带的参数
+ */
+
+function _HanGetQueryDataList(nameList) {
+  if (typeof nameList != "object")
+    return console.error(
+      "Me Error: The data type needs to be passed 'Object'."
+    );
+  if (nameList.length == 0)
+    return console.error("Me Error: Parameter cannot be empty.");
+  let resultList = [];
+  nameList.forEach((item) => {
+    var reg = new RegExp("(^|&)" + item + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+      resultList.push({
+        name: item,
+        value: unescape(r[2]),
+      });
+    }
+  });
+  if (resultList.length > 0) {
+    return resultList;
+  } else {
+    return null;
+  }
+}
