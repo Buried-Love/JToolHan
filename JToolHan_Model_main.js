@@ -84,9 +84,9 @@ function _HanGetBrowserInfo() {
   if (ua.match(/msie/) != null || ua.match(/trident/) != null) {
     browserType = "IE";
     browserVersion =
-      ua.match(/msie ([\d.]+)/) != null ?
-      ua.match(/msie ([\d.]+)/)[1] :
-      ua.match(/rv:([\d.]+)/)[1];
+      ua.match(/msie ([\d.]+)/) != null
+        ? ua.match(/msie ([\d.]+)/)[1]
+        : ua.match(/rv:([\d.]+)/)[1];
   } else if (ua.match(/firefox/) != null) {
     browserType = "火狐";
   } else if (ua.match(/ubrowser/) != null) {
@@ -151,7 +151,7 @@ function _HanDetectWebkit() {
     var n = w.navigator,
       d = w.document;
     var r = [];
-    r.isIE = "number" == typeof d.documentMode ? d.documentMode : false; //Trident
+    r.isIE = "number" == typeof d.documentMode ? d.documentMode : false;
     r.isWebkit =
       "undefined" != typeof n.productSub && "20030107" == n.productSub;
     r.isChrome =
@@ -195,11 +195,10 @@ function _HanTimeCalculation(startDate, endDate) {
   var hours = Math.floor(leave1 / (3600 * 1000));
   //计算相差分钟数
   var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
-  // console.log(leave2 / (60 * 1000)) round
   var minutes = Math.ceil(leave2 / (60 * 1000));
   var timesString = "";
   var timesStringCard = "";
-  // 判断卡片时间
+  // 判断时间
   if (days >= 1) {
     var daysNum = (days * 24 + hours) / 24;
     timesStringCard = daysNum.toFixed(1) + "天";
@@ -238,9 +237,9 @@ function _HanGetRaday(currentDate) {
   Date2.setDate(Date2.getDate() - (currentDate - 1));
   var weekYear = Date2.getFullYear();
   var weekMonth =
-    Date2.getMonth() + 1 > 10 ?
-    Date2.getMonth() + 1 :
-    "0" + (Date2.getMonth() + 1);
+    Date2.getMonth() + 1 > 10
+      ? Date2.getMonth() + 1
+      : "0" + (Date2.getMonth() + 1);
   var weekDate = Date2.getDate() > 10 ? Date2.getDate() : "0" + Date2.getDate();
   if (weekDate.length >= 3) {
     weekDate = Date2.getDate() > 10 ? Date2.getDate() : Date2.getDate();
@@ -291,6 +290,7 @@ function _HanDecibel() {
     console.log("不支持获取媒体接口");
   }
 }
+
 // 元素穿透各种JS事件不遮挡
 function _HanCssPenetrate(ele) {
   if (ele) {
@@ -308,7 +308,8 @@ function _HanAjax() {
     async: arguments[0].async == undefined ? "true" : `${arguments[0].async}`,
     data: arguments[0].data || null,
     dataType: arguments[0].dataType || "text",
-    contentType: arguments[0].contentType || "application/x-www-form-urlencoded",
+    contentType:
+      arguments[0].contentType || "application/x-www-form-urlencoded",
     beforeSend: arguments[0].beforeSend || function () {},
     success: arguments[0].success || function () {},
     error: arguments[0].error || function () {},
@@ -451,13 +452,13 @@ let _HanDialog = (function () {
     // 默认参数
     let {
       title = "标题",
-        content = "请填写内容!",
-        skin = "",
-        btns = ["确定"],
-        confirm = null,
-        cancel = null,
-        shadeClose = true,
-        animation = 2,
+      content = "请填写内容!",
+      skin = "",
+      btns = ["确定"],
+      confirm = null,
+      cancel = null,
+      shadeClose = true,
+      animation = 2,
     } = options;
     // 皮肤类名
     let skinClass = skin ? ` ${skin}` : "";
